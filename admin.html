@@ -1,277 +1,673 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MUZ Admin</title>
+  <title>MUZ ADMIN</title>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      max-width: 600px;
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f3ef;
+      color: #111;
+    }
+
+    .container {
+      max-width: 650px;
       margin: auto;
       padding: 20px;
-      background: #f5f5f5;
     }
 
-    h1 {
+    header {
       text-align: center;
+      padding: 20px 0 30px;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 25px;
     }
 
-    input, textarea, button {
+    .logo {
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: 6px;
+    }
+
+    .subtitle {
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: #777;
+      margin-top: 8px;
+    }
+
+    .panel {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 22px;
+    }
+
+    input,
+    textarea,
+    button {
       width: 100%;
-      box-sizing: border-box;
-      padding: 12px;
+      padding: 13px;
       margin: 7px 0;
       font-size: 16px;
+      font-family: inherit;
+      border-radius: 6px;
+    }
+
+    input,
+    textarea {
+      border: 1px solid #ccc;
+      background: white;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
     }
 
     button {
-      background: black;
-      color: white;
       border: none;
-      border-radius: 6px;
+      background: #111;
+      color: white;
       cursor: pointer;
+      font-weight: bold;
     }
 
-    .product {
-      background: white;
-      padding: 15px;
-      margin-top: 15px;
-      border-radius: 8px;
+    button:hover {
+      opacity: 0.85;
     }
 
-    .delete {
-      background: #c62828;
+    .logout {
+      background: #777;
+      margin-bottom: 25px;
     }
 
     .edit {
       background: #555;
     }
 
+    .delete {
+      background: #c62828;
+    }
+
+    .cancel {
+      background: #888;
+    }
+
+    .product {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 15px;
+      background: #fafafa;
+    }
+
+    .product img {
+      width: 100%;
+      max-height: 280px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 12px;
+    }
+
+    .product h3 {
+      margin: 5px 0;
+    }
+
+    .price {
+      font-weight: bold;
+      margin: 8px 0;
+    }
+
+    .description {
+      color: #666;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
     #adminPanel {
       display: none;
+    }
+
+    #editMode {
+      display: none;
+    }
+
+    .message {
+      color: #c62828;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 15px;
+      }
+
+      .logo {
+        font-size: 28px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <h1>MUZ ADMIN</h1>
+<div class="container">
 
-  <div id="loginPanel">
-    <h3>Admin Login</h3>
+  <header>
+    <div class="logo">MUZ</div>
+    <div class="subtitle">MUZ ORIGINALS — ADMIN</div>
+  </header>
 
-    <input id="email" type="email" placeholder="Email">
-    <input id="password" type="password" placeholder="Password">
 
-    <button id="loginBtn">Login</button>
+  <!-- LOGIN -->
 
-    <p id="loginMessage"></p>
+  <div id="loginPanel" class="panel">
+
+    <h2>Admin Login</h2>
+
+    <input
+      id="email"
+      type="email"
+      placeholder="Email"
+      autocomplete="email"
+    >
+
+    <input
+      id="password"
+      type="password"
+      placeholder="Password"
+      autocomplete="current-password"
+    >
+
+    <button id="loginBtn">LOGIN</button>
+
+    <p id="loginMessage" class="message"></p>
+
   </div>
 
+
+  <!-- ADMIN -->
 
   <div id="adminPanel">
 
-    <button id="logoutBtn">Logout</button>
+    <button id="logoutBtn" class="logout">LOGOUT</button>
 
-    <h2>Add Product</h2>
 
-    <input id="productName" placeholder="Product name">
+    <!-- PRODUCT FORM -->
 
-    <input id="productPrice" type="number" placeholder="Price">
+    <div class="panel">
 
-    <textarea id="productDescription" placeholder="Description"></textarea>
+      <h2 id="formTitle">Add Product</h2>
 
-    <input id="productImage" placeholder="Image URL">
+      <input
+        id="productName"
+        type="text"
+        placeholder="Product name"
+      >
 
-    <button id="saveBtn">Add Product</button>
+      <input
+        id="productPrice"
+        type="number"
+        placeholder="Price"
+      >
 
-    <h2>Products</h2>
+      <textarea
+        id="productDescription"
+        placeholder="Product description"
+      ></textarea>
 
-    <div id="products"></div>
+      <input
+        id="productImage"
+        type="url"
+        placeholder="Image URL"
+      >
+
+      <button id="saveBtn">ADD PRODUCT</button>
+
+      <div id="editMode">
+        <button id="cancelEditBtn" class="cancel">
+          CANCEL EDIT
+        </button>
+      </div>
+
+    </div>
+
+
+    <!-- PRODUCTS -->
+
+    <div class="panel">
+
+      <h2>Your Products</h2>
+
+      <div id="products">
+        Loading...
+      </div>
+
+    </div>
 
   </div>
 
-
-  <script type="module">
-
-    import { initializeApp }
-      from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-
-    import {
-      getAuth,
-      signInWithEmailAndPassword,
-      onAuthStateChanged,
-      signOut
-    } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
-
-    import {
-      getFirestore,
-      collection,
-      addDoc,
-      getDocs,
-      deleteDoc,
-      doc
-    } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+</div>
 
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAjZmyWm4_p-2bWsFuYrf7BlCWJvMoFukA",
-      authDomain: "muz-orginals.firebaseapp.com",
-      projectId: "muz-orginals",
-      storageBucket: "muz-orginals.firebasestorage.app",
-      messagingSenderId: "1042601038736",
-      appId: "1:1042601038736:web:cb7227d7b0cfebedbe1915",
-      measurementId: "G-13ZKS78FLW"
-    };
+<script type="module">
+
+  import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+
+  import {
+    getAuth,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    updateDoc,
+    deleteDoc,
+    doc
+  } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 
-    const app = initializeApp(firebaseConfig);
-
-    const auth = getAuth(app);
-
-    const db = getFirestore(app);
-
-
-    const loginPanel = document.getElementById("loginPanel");
-    const adminPanel = document.getElementById("adminPanel");
-    const loginMessage = document.getElementById("loginMessage");
-
-
-    document.getElementById("loginBtn").onclick = async () => {
-
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-
-      try {
-
-        await signInWithEmailAndPassword(auth, email, password);
-
-        loginMessage.textContent = "";
-
-      } catch (error) {
-
-        loginMessage.textContent = "Login failed: " + error.message;
-
-      }
-
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyAjZmyWm4_p-2bWsFuYrf7BlCWJvMoFukA",
+    authDomain: "muz-orginals.firebaseapp.com",
+    projectId: "muz-orginals",
+    storageBucket: "muz-orginals.firebasestorage.app",
+    messagingSenderId: "1042601038736",
+    appId: "1:1042601038736:web:cb7227d7b0cfebedbe1915",
+    measurementId: "G-13ZKS78FLW"
+  };
 
 
-    document.getElementById("logoutBtn").onclick = async () => {
+  const app = initializeApp(firebaseConfig);
 
-      await signOut(auth);
+  const auth = getAuth(app);
 
-    };
+  const db = getFirestore(app);
 
 
-    onAuthStateChanged(auth, user => {
+  const loginPanel = document.getElementById("loginPanel");
+  const adminPanel = document.getElementById("adminPanel");
+  const loginMessage = document.getElementById("loginMessage");
 
-      if (user) {
+  const productName = document.getElementById("productName");
+  const productPrice = document.getElementById("productPrice");
+  const productDescription = document.getElementById("productDescription");
+  const productImage = document.getElementById("productImage");
 
-        loginPanel.style.display = "none";
-        adminPanel.style.display = "block";
+  const saveBtn = document.getElementById("saveBtn");
+  const formTitle = document.getElementById("formTitle");
+  const editMode = document.getElementById("editMode");
+  const cancelEditBtn = document.getElementById("cancelEditBtn");
 
-        loadProducts();
+  let editingProductId = null;
+
+
+  // LOGIN
+
+  document.getElementById("loginBtn").onclick = async () => {
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    if (!email || !password) {
+      loginMessage.textContent = "Please enter email and password.";
+      return;
+    }
+
+    try {
+
+      await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      loginMessage.textContent = "";
+
+    } catch (error) {
+
+      loginMessage.textContent =
+        "Login failed. Please check your email and password.";
+
+      console.error(error);
+
+    }
+
+  };
+
+
+  // LOGOUT
+
+  document.getElementById("logoutBtn").onclick = async () => {
+
+    await signOut(auth);
+
+  };
+
+
+  // AUTH STATE
+
+  onAuthStateChanged(auth, user => {
+
+    if (user) {
+
+      loginPanel.style.display = "none";
+      adminPanel.style.display = "block";
+
+      loadProducts();
+
+    } else {
+
+      loginPanel.style.display = "block";
+      adminPanel.style.display = "none";
+
+    }
+
+  });
+
+
+  // SAVE / UPDATE PRODUCT
+
+  saveBtn.onclick = async () => {
+
+    const name = productName.value.trim();
+    const price = Number(productPrice.value);
+    const description = productDescription.value.trim();
+    const image = productImage.value.trim();
+
+
+    if (!name || !price) {
+
+      alert("Please enter product name and price.");
+
+      return;
+
+    }
+
+
+    try {
+
+      if (editingProductId) {
+
+        await updateDoc(
+          doc(db, "products", editingProductId),
+          {
+            name: name,
+            price: price,
+            description: description,
+            image: image
+          }
+        );
+
+        alert("Product updated!");
 
       } else {
 
-        loginPanel.style.display = "block";
-        adminPanel.style.display = "none";
+        await addDoc(
+          collection(db, "products"),
+          {
+            name: name,
+            price: price,
+            description: description,
+            image: image
+          }
+        );
+
+        alert("Product added!");
 
       }
 
+
+      clearForm();
+
+      await loadProducts();
+
+
+    } catch (error) {
+
+      alert("Error: " + error.message);
+
+      console.error(error);
+
+    }
+
+  };
+
+
+  // EDIT PRODUCT
+
+  function editProduct(id, data) {
+
+    editingProductId = id;
+
+    productName.value = data.name || "";
+    productPrice.value = data.price || "";
+    productDescription.value = data.description || "";
+    productImage.value = data.image || "";
+
+    formTitle.textContent = "Edit Product";
+
+    saveBtn.textContent = "UPDATE PRODUCT";
+
+    editMode.style.display = "block";
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
     });
 
+  }
 
-    document.getElementById("saveBtn").onclick = async () => {
 
-      const name = document.getElementById("productName").value;
-      const price = Number(document.getElementById("productPrice").value);
-      const description = document.getElementById("productDescription").value;
-      const image = document.getElementById("productImage").value;
+  // CANCEL EDIT
 
-      if (!name || !price) {
+  cancelEditBtn.onclick = () => {
 
-        alert("Please enter product name and price.");
+    clearForm();
+
+  };
+
+
+  // CLEAR FORM
+
+  function clearForm() {
+
+    editingProductId = null;
+
+    productName.value = "";
+    productPrice.value = "";
+    productDescription.value = "";
+    productImage.value = "";
+
+    formTitle.textContent = "Add Product";
+
+    saveBtn.textContent = "ADD PRODUCT";
+
+    editMode.style.display = "none";
+
+  }
+
+
+  // LOAD PRODUCTS
+
+  async function loadProducts() {
+
+    const container =
+      document.getElementById("products");
+
+    container.innerHTML = "Loading...";
+
+
+    try {
+
+      const snapshot =
+        await getDocs(collection(db, "products"));
+
+      container.innerHTML = "";
+
+
+      if (snapshot.empty) {
+
+        container.innerHTML =
+          "<p>No products yet.</p>";
+
         return;
 
       }
 
-      try {
-
-        await addDoc(collection(db, "products"), {
-
-          name: name,
-          price: price,
-          description: description,
-          image: image
-
-        });
-
-        alert("Product added!");
-
-        document.getElementById("productName").value = "";
-        document.getElementById("productPrice").value = "";
-        document.getElementById("productDescription").value = "";
-        document.getElementById("productImage").value = "";
-
-        loadProducts();
-
-      } catch (error) {
-
-        alert("Error: " + error.message);
-
-      }
-
-    };
-
-
-    async function loadProducts() {
-
-      const container = document.getElementById("products");
-
-      container.innerHTML = "Loading...";
-
-      const snapshot = await getDocs(collection(db, "products"));
-
-      container.innerHTML = "";
 
       snapshot.forEach(product => {
 
         const data = product.data();
 
-        const div = document.createElement("div");
+        const div =
+          document.createElement("div");
 
         div.className = "product";
 
-        div.innerHTML = `
-          <h3>${data.name || ""}</h3>
-          <p>₹${data.price || ""}</p>
-          <p>${data.description || ""}</p>
-          <button class="delete">Delete</button>
-        `;
 
-        div.querySelector(".delete").onclick = async () => {
+        if (data.image && data.image.trim() !== "") {
 
-          if (confirm("Delete this product?")) {
+          const image =
+            document.createElement("img");
 
-            await deleteDoc(doc(db, "products", product.id));
+          image.src = data.image;
 
-            loadProducts();
+          image.alt =
+            data.name || "MUZ shirt";
+
+          div.appendChild(image);
+
+        }
+
+
+        const title =
+          document.createElement("h3");
+
+        title.textContent =
+          data.name || "MUZ Shirt";
+
+        div.appendChild(title);
+
+
+        const price =
+          document.createElement("div");
+
+        price.className = "price";
+
+        price.textContent =
+          data.price !== undefined
+            ? "₹" + data.price
+            : "";
+
+        div.appendChild(price);
+
+
+        const description =
+          document.createElement("div");
+
+        description.className = "description";
+
+        description.textContent =
+          data.description || "";
+
+        div.appendChild(description);
+
+
+        const editButton =
+          document.createElement("button");
+
+        editButton.className = "edit";
+
+        editButton.textContent = "EDIT";
+
+        editButton.onclick = () => {
+
+          editProduct(
+            product.id,
+            data
+          );
+
+        };
+
+
+        const deleteButton =
+          document.createElement("button");
+
+        deleteButton.className = "delete";
+
+        deleteButton.textContent = "DELETE";
+
+        deleteButton.onclick = async () => {
+
+          if (!confirm("Delete this product?")) {
+            return;
+          }
+
+          try {
+
+            await deleteDoc(
+              doc(db, "products", product.id)
+            );
+
+            await loadProducts();
+
+          } catch (error) {
+
+            alert(
+              "Could not delete product: " +
+              error.message
+            );
 
           }
 
         };
 
+
+        div.appendChild(editButton);
+
+        div.appendChild(deleteButton);
+
         container.appendChild(div);
 
       });
 
+
+    } catch (error) {
+
+      console.error(error);
+
+      container.innerHTML =
+        "<p>Unable to load products.</p>";
+
     }
 
-  </script>
+  }
+
+</script>
 
 </body>
-  </html>
+</html>
+
+
+  
+
